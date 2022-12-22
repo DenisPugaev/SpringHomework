@@ -16,7 +16,7 @@ public class ProductGenerator {
 
     private final ProductRepository productRepository;
 
-    private Faker faker;
+    private final Faker faker;
 
     public ProductGenerator(ProductRepository productRepository, Faker faker) {
         this.productRepository = productRepository;

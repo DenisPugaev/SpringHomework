@@ -8,8 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class MyConfiguration {
 
     @Bean
-    public Faker getFaker(){
-        Faker faker = new Faker();
-        return faker;
+    public Faker getFaker() {
+        return new Faker();
     }
 }

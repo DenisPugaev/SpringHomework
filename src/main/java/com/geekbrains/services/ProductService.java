@@ -17,11 +17,11 @@ public class ProductService {
     }
 
 
-    public List<Product> findAll(){
-       return productRepository.findAll();
+    public List<Product> findAllProducts() {
+        return productRepository.findAll();
     }
 
-    public Optional<Product> findById(Long id){
+    public Optional<Product> findById(Long id) {
         return productRepository.findById(id);
     }
 
@@ -35,5 +35,29 @@ public class ProductService {
 
     public void deleteById(Long id) {
         productRepository.deleteById(id);
+    }
+
+    public List<Product> findMinMaxPrice(BigDecimal minPrice, BigDecimal maxPrice) {
+        if (minPrice == null) minPrice = findProductMinPrice().orElseThrow().getPrice();
+        if (maxPrice == null) maxPrice = findProductMaxPrice().orElseThrow().getPrice();
+
+        return productRepository.findByPriceBetween(minPrice, maxPrice);
+    }
+
+    public List<Product> findListMinPrice(BigDecimal maxPrice) {
+        return productRepository.findByPriceBefore(maxPrice);
+    }
+
+    public List<Product> findListMaxPrice(BigDecimal minPrice) {
+        return productRepository.findByPriceAfter(minPrice);
+    }
+
+
+    public Optional<Product> findProductMaxPrice() {
+        return productRepository.findProductByMaxPrice();
+    }
+
+    public Optional<Product> findProductMinPrice() {
+        return productRepository.findProductByMinPrice();
     }
 }

@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 
 @Data
 @Entity
-@Table(name = "products",schema = "products")
+@Table(name = "products", schema = "products")
 public class Product {
 
     @Id
