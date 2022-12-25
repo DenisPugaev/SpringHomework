@@ -1,8 +1,10 @@
 package com.geekbrains.services;
 
+import com.geekbrains.exceptions.ResourceNotFoundException;
 import com.geekbrains.model.Product;
 import com.geekbrains.repository.ProductRepository;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -25,12 +27,8 @@ public class ProductService {
         return productRepository.findById(id);
     }
 
-    public void save(String name, BigDecimal price, String manufacturer) {
-        Product product = new Product();
-        product.setName(name);
-        product.setPrice(price);
-        product.setManufacturer(manufacturer);
-        productRepository.save(product);
+    public Product save(Product product) {
+       return productRepository.save(product);
     }
 
     public void deleteById(Long id) {
@@ -40,16 +38,7 @@ public class ProductService {
     public List<Product> findMinMaxPrice(BigDecimal minPrice, BigDecimal maxPrice) {
         if (minPrice == null) minPrice = findProductMinPrice().orElseThrow().getPrice();
         if (maxPrice == null) maxPrice = findProductMaxPrice().orElseThrow().getPrice();
-
         return productRepository.findByPriceBetween(minPrice, maxPrice);
-    }
-
-    public List<Product> findListMinPrice(BigDecimal maxPrice) {
-        return productRepository.findByPriceBefore(maxPrice);
-    }
-
-    public List<Product> findListMaxPrice(BigDecimal minPrice) {
-        return productRepository.findByPriceAfter(minPrice);
     }
 
 
@@ -59,5 +48,11 @@ public class ProductService {
 
     public Optional<Product> findProductMinPrice() {
         return productRepository.findProductByMinPrice();
+    }
+
+    @Transactional
+    public void changePrice(Long id, BigDecimal delta) {
+        Product product =  productRepository.findById(id).orElseThrow(()-> new  ResourceNotFoundException("Невозможно изменить цену продукта,продукт не найден! ID:"+id));
+        product.setPrice(product.getPrice().add(delta));
     }
 }
