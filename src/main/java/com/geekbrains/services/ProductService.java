@@ -1,8 +1,14 @@
 package com.geekbrains.services;
 
+import com.geekbrains.dto.ProductDto;
 import com.geekbrains.exceptions.ResourceNotFoundException;
 import com.geekbrains.model.Product;
 import com.geekbrains.repository.ProductRepository;
+import com.geekbrains.repository.specifications.ProductSpecifications;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +24,22 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
+    public Page<Product> find(BigDecimal minPrice, BigDecimal maxPrice, String partName, Integer page) {
+        Specification spec = Specification.where(null);
+        if (minPrice != null) {
+            spec = spec.and(ProductSpecifications.priceGreaterOrEqualsThan(minPrice));
+        }
+        if (maxPrice != null) {
+            spec = spec.and(ProductSpecifications.priceLessThanOrEqualsThan(maxPrice));
+        }
+        if (partName != null) {
+            spec = spec.and(ProductSpecifications.nameLike(partName));
+        }
+
+
+        return productRepository.findAll(spec, PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.ASC, "Id")));
+    }
+
 
     public List<Product> findAllProducts() {
         return productRepository.findAll();
@@ -28,31 +50,18 @@ public class ProductService {
     }
 
     public Product save(Product product) {
-       return productRepository.save(product);
+//        Product product = new Product(productDto.getName(), productDto.getPrice(), productDto.getManufacturer());
+        return productRepository.save(product);
     }
 
     public void deleteById(Long id) {
         productRepository.deleteById(id);
     }
 
-    public List<Product> findMinMaxPrice(BigDecimal minPrice, BigDecimal maxPrice) {
-        if (minPrice == null) minPrice = findProductMinPrice().orElseThrow().getPrice();
-        if (maxPrice == null) maxPrice = findProductMaxPrice().orElseThrow().getPrice();
-        return productRepository.findByPriceBetween(minPrice, maxPrice);
-    }
-
-
-    public Optional<Product> findProductMaxPrice() {
-        return productRepository.findProductByMaxPrice();
-    }
-
-    public Optional<Product> findProductMinPrice() {
-        return productRepository.findProductByMinPrice();
-    }
 
     @Transactional
     public void changePrice(Long id, BigDecimal delta) {
-        Product product =  productRepository.findById(id).orElseThrow(()-> new  ResourceNotFoundException("Невозможно изменить цену продукта,продукт не найден! ID:"+id));
-        product.setPrice(product.getPrice().add(delta));
+        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Невозможно изменить цену продукта,продукт не найден! ID:" + id));
+        productRepository.updatePriceById(product.getPrice().add(delta),id);
     }
 }

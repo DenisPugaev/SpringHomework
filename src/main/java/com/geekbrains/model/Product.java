@@ -22,4 +22,13 @@ public class Product {
 
     @Column(name = "manufacturer")
     private String manufacturer;
+
+    public Product(String name, BigDecimal price, String manufacturer) {
+        this.name = name;
+        this.price = price;
+        this.manufacturer = manufacturer;
+    }
+
+    public Product() {
+    }
 }
