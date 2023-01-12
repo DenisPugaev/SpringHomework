@@ -44,8 +44,6 @@ public class ProductService {
     }
 
 
-
-
     public Optional<Product> findById(Long id) {
         return productRepository.findById(id);
     }
@@ -61,7 +59,7 @@ public class ProductService {
 
     @Transactional
     public Product update(ProductDto productDto) {
-        Product product = productRepository.findById(productDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Невозможно обновить продукт! ID:" + productDto.getId()+" не найден!" ));
+        Product product = productRepository.findById(productDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Невозможно обновить продукт! ID:" + productDto.getId() + " не найден!"));
         product.setTitle(productDto.getTitle());
         product.setPrice(productDto.getPrice());
         product.setManufacturer(product.getManufacturer());

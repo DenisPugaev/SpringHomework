@@ -12,6 +12,6 @@ public class ValidationException extends RuntimeException {
 
     public ValidationException(List<String> errorFieldsMessages) {
         super(errorFieldsMessages.stream().collect(Collectors.joining(",")));
-        this.errorFieldsMessages= errorFieldsMessages;
+        this.errorFieldsMessages = errorFieldsMessages;
     }
 }

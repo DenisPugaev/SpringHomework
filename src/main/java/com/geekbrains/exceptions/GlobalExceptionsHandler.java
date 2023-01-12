@@ -6,11 +6,11 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @ControllerAdvice
-public class GlobalExceptionsHandler  {
+public class GlobalExceptionsHandler {
 
     @ExceptionHandler
-    public ResponseEntity<AppError> catchResourceNotFoundException( ResourceNotFoundException e){
-      return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(),e.getMessage()),HttpStatus.NOT_FOUND);
+    public ResponseEntity<AppError> catchResourceNotFoundException(ResourceNotFoundException e) {
+        return new ResponseEntity<>(new AppError(HttpStatus.NOT_FOUND.value(), e.getMessage()), HttpStatus.NOT_FOUND);
     }
 
 

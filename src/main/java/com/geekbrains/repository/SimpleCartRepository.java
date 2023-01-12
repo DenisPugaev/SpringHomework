@@ -7,21 +7,23 @@ import org.springframework.stereotype.Repository;
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Repository
 @NoArgsConstructor
 @AllArgsConstructor
-public class CartRepository {
-   private List<ProductDto> productListInCart = new ArrayList<>();
+public class SimpleCartRepository {
+    private List<ProductDto> productListInCart = new ArrayList<>();
 
-    public List<ProductDto> getProductListInCart(){
+    public List<ProductDto> getProductListInCart() {
         return productListInCart;
     }
-    public  void  add(ProductDto productDto){
+
+    public void add(ProductDto productDto) {
         productListInCart.add(productDto);
     }
 
 
-    public void remove(ProductDto productDto){
+    public void remove(ProductDto productDto) {
         productListInCart.remove(productDto);
     }
 

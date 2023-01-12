@@ -27,7 +27,7 @@ public class ProductController {
     private final ProductService productService;
     private final ProductConverter productConverter;
     private final ProductValidator productValidator;
-    private  final CartService cartService;
+    private final CartService cartService;
 
 
     @GetMapping
@@ -74,24 +74,22 @@ public class ProductController {
 
 
     @GetMapping("/cart")
-    public List<ProductDto> getProductsCartList(){
+    public List<ProductDto> getProductsCartList() {
         return cartService.getProductListInCart();
     }
 
     @GetMapping("/cart/{id}")
-    public void addProductInCart(@PathVariable Long id){
-       Product product = productService.findById(id).orElseThrow(()->new ResourceNotFoundException("Product not found, id: " + id));
+    public void addProductInCart(@PathVariable Long id) {
+        Product product = productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
         log.info(productConverter.entityInDto(product).getTitle());
         cartService.add(productConverter.entityInDto(product));
     }
 
     @DeleteMapping("/cart/{id}")
-    public void deleteProductFromCart(@PathVariable Long id){
-        Product product = productService.findById(id).orElseThrow(()->new ResourceNotFoundException("Product not found, id: " + id));
+    public void deleteProductFromCart(@PathVariable Long id) {
+        Product product = productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
         cartService.remove(productConverter.entityInDto(product));
     }
-
-
 
 
 }
