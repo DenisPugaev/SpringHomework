@@ -1,23 +1,20 @@
 package com.geekbrains.dto;
 
-import com.geekbrains.model.Product;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
+
 
 import java.math.BigDecimal;
 
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class ProductDto {
     private Long id;
-    private String name;
+    private String title;
     private BigDecimal price;
     private String manufacturer;
-
-    public ProductDto(Product product) {
-        this.id = product.getId();
-        this.name = product.getName();
-        this.price = product.getPrice();
-        this.manufacturer = product.getManufacturer();
-    }
 
 
 }

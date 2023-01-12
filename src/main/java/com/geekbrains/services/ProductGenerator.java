@@ -31,7 +31,7 @@ public class ProductGenerator {
 
         for (int i = 0; i < 20; i++) {
             Product product = new Product();
-            product.setName(faker.commerce().productName());
+            product.setTitle(faker.commerce().productName());
             product.setPrice(BigDecimal.valueOf(Math.random() * 100000));
             if (i % 2 == 0) {
                 product.setManufacturer(company1);

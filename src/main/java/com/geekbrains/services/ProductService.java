@@ -5,6 +5,7 @@ import com.geekbrains.exceptions.ResourceNotFoundException;
 import com.geekbrains.model.Product;
 import com.geekbrains.repository.ProductRepository;
 import com.geekbrains.repository.specifications.ProductSpecifications;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
@@ -13,9 +14,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.List;
 import java.util.Optional;
 
+@Slf4j
 @Service
 public class ProductService {
     private final ProductRepository productRepository;
@@ -24,33 +25,32 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    public Page<Product> find(BigDecimal minPrice, BigDecimal maxPrice, String partName, Integer page) {
-        Specification spec = Specification.where(null);
+    public Page<Product> findAll(BigDecimal minPrice, BigDecimal maxPrice, String titlePart, Integer page) {
+        Specification<Product> spec = Specification.where(null);
         if (minPrice != null) {
             spec = spec.and(ProductSpecifications.priceGreaterOrEqualsThan(minPrice));
         }
         if (maxPrice != null) {
             spec = spec.and(ProductSpecifications.priceLessThanOrEqualsThan(maxPrice));
         }
-        if (partName != null) {
-            spec = spec.and(ProductSpecifications.nameLike(partName));
+        if (titlePart != null) {
+            spec = spec.and(ProductSpecifications.nameLike(titlePart));
         }
 
+        log.info(productRepository.findAll(spec, PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.ASC, "Id"))).toString());
 
-        return productRepository.findAll(spec, PageRequest.of(page - 1, 5, Sort.by(Sort.Direction.ASC, "Id")));
+
+        return productRepository.findAll(spec, PageRequest.of(page - 1, 10, Sort.by(Sort.Direction.ASC, "Id")));
     }
 
 
-    public List<Product> findAllProducts() {
-        return productRepository.findAll();
-    }
+
 
     public Optional<Product> findById(Long id) {
         return productRepository.findById(id);
     }
 
     public Product save(Product product) {
-//        Product product = new Product(productDto.getName(), productDto.getPrice(), productDto.getManufacturer());
         return productRepository.save(product);
     }
 
@@ -60,8 +60,11 @@ public class ProductService {
 
 
     @Transactional
-    public void changePrice(Long id, BigDecimal delta) {
-        Product product = productRepository.findById(id).orElseThrow(() -> new ResourceNotFoundException("Невозможно изменить цену продукта,продукт не найден! ID:" + id));
-        productRepository.updatePriceById(product.getPrice().add(delta),id);
+    public Product update(ProductDto productDto) {
+        Product product = productRepository.findById(productDto.getId()).orElseThrow(() -> new ResourceNotFoundException("Невозможно обновить продукт! ID:" + productDto.getId()+" не найден!" ));
+        product.setTitle(productDto.getTitle());
+        product.setPrice(productDto.getPrice());
+        product.setManufacturer(product.getManufacturer());
+        return product;
     }
 }

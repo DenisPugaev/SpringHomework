@@ -1,7 +1,6 @@
 package com.geekbrains.repository.specifications;
 
 import com.geekbrains.model.Product;
-import jakarta.persistence.criteria.Predicate;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;
@@ -15,8 +14,8 @@ public class ProductSpecifications {
         return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.lessThanOrEqualTo(root.get("price"), price);
     }
 
-    public static Specification<Product> nameLike(String namePart) {
-        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("name"), String.format("%%%s%%", namePart));
+    public static Specification<Product> nameLike(String titlePart) {
+        return (root, criteriaQuery, criteriaBuilder) -> criteriaBuilder.like(root.get("title"), String.format("%%%s%%", titlePart));
     }
 
 
