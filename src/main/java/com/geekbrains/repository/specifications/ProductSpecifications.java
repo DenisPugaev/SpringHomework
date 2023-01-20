@@ -1,6 +1,6 @@
 package com.geekbrains.repository.specifications;
 
-import com.geekbrains.model.Product;
+import com.geekbrains.entities.Product;
 import org.springframework.data.jpa.domain.Specification;
 
 import java.math.BigDecimal;

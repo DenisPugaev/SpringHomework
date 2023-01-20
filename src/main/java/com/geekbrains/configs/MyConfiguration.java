@@ -1,4 +1,4 @@
-package com.geekbrains;
+package com.geekbrains.configs;
 
 import com.github.javafaker.Faker;
 import org.springframework.context.annotation.Bean;

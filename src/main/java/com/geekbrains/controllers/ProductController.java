@@ -4,8 +4,7 @@ package com.geekbrains.controllers;
 import com.geekbrains.converters.ProductConverter;
 import com.geekbrains.dto.ProductDto;
 import com.geekbrains.exceptions.ResourceNotFoundException;
-import com.geekbrains.model.Product;
-import com.geekbrains.services.CartService;
+import com.geekbrains.entities.Product;
 import com.geekbrains.services.ProductService;
 import com.geekbrains.validators.ProductValidator;
 import lombok.RequiredArgsConstructor;
@@ -14,7 +13,6 @@ import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.math.BigDecimal;
-import java.util.List;
 
 
 @Slf4j
@@ -27,7 +25,6 @@ public class ProductController {
     private final ProductService productService;
     private final ProductConverter productConverter;
     private final ProductValidator productValidator;
-    private final CartService cartService;
 
 
     @GetMapping
@@ -73,23 +70,7 @@ public class ProductController {
     }
 
 
-    @GetMapping("/cart")
-    public List<ProductDto> getProductsCartList() {
-        return cartService.getProductListInCart();
-    }
 
-    @GetMapping("/cart/{id}")
-    public void addProductInCart(@PathVariable Long id) {
-        Product product = productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
-        log.info(productConverter.entityInDto(product).getTitle());
-        cartService.add(productConverter.entityInDto(product));
-    }
-
-    @DeleteMapping("/cart/{id}")
-    public void deleteProductFromCart(@PathVariable Long id) {
-        Product product = productService.findById(id).orElseThrow(() -> new ResourceNotFoundException("Product not found, id: " + id));
-        cartService.remove(productConverter.entityInDto(product));
-    }
 
 
 }

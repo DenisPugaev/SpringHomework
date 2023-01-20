@@ -2,7 +2,7 @@ package com.geekbrains.services;
 
 import com.geekbrains.dto.ProductDto;
 import com.geekbrains.exceptions.ResourceNotFoundException;
-import com.geekbrains.model.Product;
+import com.geekbrains.entities.Product;
 import com.geekbrains.repository.ProductRepository;
 import com.geekbrains.repository.specifications.ProductSpecifications;
 import lombok.extern.slf4j.Slf4j;

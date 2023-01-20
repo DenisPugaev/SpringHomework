@@ -1,4 +1,4 @@
-package com.geekbrains.model;
+package com.geekbrains.entities;
 
 import jakarta.persistence.*;
 import lombok.Data;

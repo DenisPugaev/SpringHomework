@@ -1,6 +1,6 @@
 package com.geekbrains.services;
 
-import com.geekbrains.model.Product;
+import com.geekbrains.entities.Product;
 import com.geekbrains.repository.ProductRepository;
 import com.github.javafaker.Faker;
 
