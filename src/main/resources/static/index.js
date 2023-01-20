@@ -115,14 +115,14 @@ angular.module('app', ['ngStorage']).controller('indexController', function ($sc
         }
     };
 
-    // $scope.showCurrentUserInfo = function () {
-    //     $http.get('http://localhost:8080/app/api/v1/profile')
-    //         .then(function successCallback(response) {
-    //             alert('MY NAME IS: ' + response.data.username);
-    //         }, function errorCallback(response) {
-    //             alert('UNAUTHORIZED');
-    //         });
-    // }
+    $scope.showCurrentUserInfo = function () {
+        $http.get('http://localhost:8080/app/api/v1/profile')
+            .then(function successCallback(response) {
+                alert('MY NAME IS: ' + response.data.username);
+            }, function errorCallback(response) {
+                alert('UNAUTHORIZED');
+            });
+    }
 
 
 
